@@ -19,10 +19,6 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
     public static final String TO_LANG = "to_lang";
     View view;
 
-    public static LanguageBarFragment newInstance(String param1, String param2) {
-        return new LanguageBarFragment();
-    }
-
     public LanguageBarFragment() {
         // Required empty public constructor
     }
@@ -76,6 +72,10 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setLang (int which, String data) {
+        ((Button) view.findViewById(which)).setText(data);
     }
 
     public interface OnLanguageChangeListener {
