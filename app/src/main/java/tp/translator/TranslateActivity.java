@@ -7,6 +7,8 @@ import android.view.MenuItem;
 
 public class TranslateActivity extends AppCompatActivity {
 
+    public static final String LANGUAGE_MAP = "language_map";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

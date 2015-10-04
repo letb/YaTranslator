@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -44,7 +45,7 @@ public class YandexAPIAdapter {
             InputStream responseStream =  new BufferedInputStream(urlConnection.getInputStream());
             String response = readStream(responseStream);
 
-            if (responseCode != urlConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_OK) {
                 return ("Yandex API error occured: " + response);
             }
             return (response);
@@ -53,7 +54,7 @@ public class YandexAPIAdapter {
         }
     }
 
-    public String getLanguages() throws IOException {
+    public static String getLanguages() throws IOException {
         final String URL_PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/getLangs?";
         String url = URL_PREFIX + PARAM_API_KEY + API_KEY;
 
