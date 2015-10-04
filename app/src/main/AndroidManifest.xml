@@ -20,8 +20,11 @@
             android:name=".LanguageList"
             android:label="@string/title_activity_language_list"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".TranslateActivity"
-            android:label="@string/title_activity_translate" >
+            android:label="@string/title_activity_translator"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

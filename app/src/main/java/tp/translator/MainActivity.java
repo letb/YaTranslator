@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import tp.translator.utils.Parser;
 import tp.translator.utils.ProgressBarViewer;
+import tp.translator.utils.UserInformer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             YandexAPIAdapter.getLanguages();
         } catch (IOException e) {
-            showMessage(getResources().getString(R.string.CONNECTION_ERROR));
+            UserInformer.showMessage(getResources().getString(R.string.CONNECTION_ERROR), MainActivity.this);
         }
     }
 
@@ -50,33 +51,8 @@ public class MainActivity extends AppCompatActivity {
             ProgressBarViewer.hide();
             startActivity(intent);
         } catch (JSONException e) {
-            showMessage(getResources().getString(R.string.PARSE_ERROR));
+            UserInformer.showMessage(getResources().getString(R.string.PARSE_ERROR), MainActivity.this);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    private void showMessage(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
