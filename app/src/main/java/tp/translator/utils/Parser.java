@@ -4,10 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -48,5 +51,21 @@ public class Parser {
         }
         languageMap.remove("");
         return languageMap;
+    }
+
+    public static Map<String, String> parseLanguagesNames(String values) throws JSONException {
+        Map<String, String> langNamesMap = new HashMap<String, String>();
+
+        JSONObject valuesObject = new JSONObject(values);
+        JSONObject langsObject = valuesObject.getJSONObject("langs");
+
+        Iterator<String> keysIter = langsObject.keys();
+        while (keysIter.hasNext()) {
+            String key = keysIter.next();
+            String value = langsObject.getString(key);
+            langNamesMap.put(key, value);
+        }
+
+        return langNamesMap;
     }
 }

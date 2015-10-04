@@ -20,11 +20,13 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class YandexAPIAdapter {
     static final String API_KEY = "trnsl.1.1.20151003T144534Z.40c93807d08d1478." +
-                                    "dce04c61895b35b049d65073e98ecb8ef6e800d3";
+                                    "dce04c61895b35b049d65073e98ecb8ef6e800d3",
+                        UI      = "ru";
 
     static final String PARAM_API_KEY   =   "key=",
                         PARAM_LANG_PAIR =   "&lang=",
-                        PARAM_TEXT      =   "&text=";
+                        PARAM_TEXT      =   "&text=",
+                        PARAM_UI        =   "&ui=";
 
     static final String PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/";
 
@@ -93,7 +95,7 @@ public class YandexAPIAdapter {
     }
 
     public static void getLanguages() throws IOException {
-        String url = PREFIX + PARAM_GET_LANGS + PARAM_API_KEY + API_KEY;
+        String url = PREFIX + PARAM_GET_LANGS + PARAM_API_KEY + API_KEY + PARAM_UI + UI;
 
         URL requestUrl = new URL(url);
         GetRequestTask getRequestTask = new GetRequestTask();
@@ -127,5 +129,7 @@ public class YandexAPIAdapter {
 
         return response;
     }
+
+
 
 }
