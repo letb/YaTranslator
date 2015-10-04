@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -21,18 +22,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        YandexAPIAdapter.setAdapterListener(new YandexAPIAdapter.AdapterListener() {
+            @Override
+            public void onDataLoaded(String data) {
+                proceedToTranslation(data);
+            }
+        });
+
+//        TODO: Закомментить, если все повалится
         ProgressBarViewer.view(MainActivity.this, getResources().getString(R.string.language_loading_progress_bar_msg));
+        try {
+            YandexAPIAdapter.getLanguages();
+        } catch (IOException e) {
+            showMessage(getResources().getString(R.string.CONNECTION_ERROR));
+        }
+    }
+
+    public void proceedToTranslation (String languages) {
         try {
             HashMap<String, ArrayList<String>> languageMap = Parser.parseLanguageList(
                     getResources().getString(R.string.api_langarray_name),
-                    YandexAPIAdapter.getLanguages()
+                    languages
             );
             Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
             intent.putExtra(TranslateActivity.LANGUAGE_MAP, languageMap);
             ProgressBarViewer.hide();
             startActivity(intent);
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException e) {
+            showMessage(getResources().getString(R.string.PARSE_ERROR));
         }
     }
 
@@ -41,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override

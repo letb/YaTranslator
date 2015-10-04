@@ -25,6 +25,15 @@ public class YandexAPIAdapter {
             PARAM_LANG_PAIR = "&lang=",
             PARAM_TEXT = "&text=";
 
+    public interface AdapterListener {
+        public void onDataLoaded(String data);
+    }
+
+    private static AdapterListener listener;
+
+    public static void setAdapterListener(AdapterListener newListener) {
+        listener = newListener;
+    }
 
     private static String readStream(InputStream inputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder(inputStream.available());
@@ -54,7 +63,7 @@ public class YandexAPIAdapter {
         }
     }
 
-    public static String getLanguages() throws IOException {
+    public static void getLanguages() throws IOException {
         final String URL_PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/getLangs?";
         String url = URL_PREFIX + PARAM_API_KEY + API_KEY;
 
@@ -63,7 +72,8 @@ public class YandexAPIAdapter {
         String response = getRequest(requestUrl);
         Log.i("getLanguages", response);
 
-        return response;
+        if (listener != null)
+            listener.onDataLoaded(response);
     }
 
     public String detectLanguage(final String text) throws IOException {
