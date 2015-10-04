@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class LanguageList extends AppCompatActivity {
-
     public static final String LANGUAGE_LIST = "language_list";
     public static final String LANGUAGE = "language";
     private ArrayList<String> languages = new ArrayList<>();
