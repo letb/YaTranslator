@@ -1,6 +1,7 @@
 package tp.translator;
 
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -9,21 +10,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLEngineResult;
 
 /**
  * Created by dannie on 03.10.15.
  */
 public class YandexAPIAdapter {
     static final String API_KEY = "trnsl.1.1.20151003T144534Z.40c93807d08d1478." +
-                                        "dce04c61895b35b049d65073e98ecb8ef6e800d3";
-    static final String PARAM_API_KEY = "key=",
-            PARAM_LANG_PAIR = "&lang=",
-            PARAM_TEXT = "&text=";
+                                    "dce04c61895b35b049d65073e98ecb8ef6e800d3";
+
+    static final String PARAM_API_KEY   =   "key=",
+                        PARAM_LANG_PAIR =   "&lang=",
+                        PARAM_TEXT      =   "&text=";
+
+    static final String PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/";
+
+    static final String PARAM_GET_LANGS =   "getLangs?",
+                        PARAM_DETECT    =   "detect?",
+                        PARAM_TRANSLATE =   "translate?";
+
 
     public interface AdapterListener {
         public void onDataLoaded(String data);
@@ -45,60 +53,76 @@ public class YandexAPIAdapter {
         return stringBuilder.toString();
     }
 
-    private static String getRequest(final URL requestUrl) throws IOException {
-        HttpsURLConnection urlConnection = (HttpsURLConnection) requestUrl.openConnection();
-        urlConnection.setRequestMethod("GET");
 
-        try {
-            int responseCode = urlConnection.getResponseCode();
-            InputStream responseStream =  new BufferedInputStream(urlConnection.getInputStream());
-            String response = readStream(responseStream);
+    private static class GetRequestTask extends AsyncTask<URL, Void, String> {
+        protected Exception error;
 
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                return ("Yandex API error occured: " + response);
+        @Override
+        protected String doInBackground(URL... urls) {
+            try {
+                URL requestUrl = urls[0];
+                HttpsURLConnection urlConnection = (HttpsURLConnection) requestUrl.openConnection();
+                urlConnection.setRequestMethod("GET");
+
+                try {
+                    int responseCode = urlConnection.getResponseCode();
+                    InputStream responseStream = new BufferedInputStream(urlConnection.getInputStream());
+                    String response = readStream(responseStream);
+
+                    if (responseCode != HttpURLConnection.HTTP_OK) {
+                        return ("Yandex API error occured: " + response);
+                    }
+
+                    return (response);
+                } finally {
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                error = e;
+                Log.e(this.getClass().toString(), e.getMessage(), e);
+
+                return null;
             }
-            return (response);
-        } finally {
-            urlConnection.disconnect();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (listener != null)
+                listener.onDataLoaded(result);
         }
     }
 
     public static void getLanguages() throws IOException {
-        final String URL_PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/getLangs?";
-        String url = URL_PREFIX + PARAM_API_KEY + API_KEY;
+        String url = PREFIX + PARAM_GET_LANGS + PARAM_API_KEY + API_KEY;
 
         URL requestUrl = new URL(url);
-
-        String response = getRequest(requestUrl);
-        Log.i("getLanguages", response);
-
-        if (listener != null)
-            listener.onDataLoaded(response);
+        GetRequestTask getRequestTask = new GetRequestTask();
+        getRequestTask.execute(requestUrl);
     }
 
-    public String detectLanguage(final String text) throws IOException {
-        final String URL_PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/getLangs?";
-        String url = URL_PREFIX + PARAM_API_KEY + API_KEY + PARAM_TEXT + text;
+    public static String detectLanguage(final String text) throws IOException, ExecutionException, InterruptedException {
+        String url = PREFIX + PARAM_DETECT + PARAM_API_KEY + API_KEY + PARAM_TEXT + text;
 
         URL requestUrl = new URL(url);
 
-        String response = getRequest(requestUrl);
+        GetRequestTask getRequestTask = new GetRequestTask();
+        String response = getRequestTask.execute(requestUrl).get();
         Log.i("detectLanguage", response);
+
 
         return response;
     }
 
-    public String translateText(final String text, final String fromLang, final String toLang)
-                                                                            throws IOException {
-        final String URL_PREFIX = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
+    public static String translateText(final String text, final String fromLang, final String toLang)
+            throws IOException, ExecutionException, InterruptedException {
         final String LANG_PAIR = fromLang + "-" + toLang;
-        String url = URL_PREFIX +   PARAM_API_KEY + API_KEY +
-                                    PARAM_TEXT + text +
-                                    PARAM_LANG_PAIR + LANG_PAIR;
+        String url = PREFIX + PARAM_TRANSLATE + PARAM_API_KEY + API_KEY +
+                                                PARAM_TEXT + text +
+                                                PARAM_LANG_PAIR + LANG_PAIR;
 
         URL requestUrl = new URL(url);
-
-        String response = getRequest(requestUrl);
+        GetRequestTask getRequestTask = new GetRequestTask();
+        String response = getRequestTask.execute(requestUrl).get();
         Log.i("translateText", response);
 
         return response;
