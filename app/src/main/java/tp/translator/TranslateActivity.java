@@ -26,7 +26,6 @@ public class TranslateActivity extends AppCompatActivity implements LanguageBarF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
-
         Intent intent = getIntent();
         fetchParams(intent);
     }
@@ -44,29 +43,28 @@ public class TranslateActivity extends AppCompatActivity implements LanguageBarF
             startActivityForResult(intent, FROM_LANGUAGE_REQUEST);
         }
         else {
-//            ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get()));
-//            Intent intent = new Intent(this, LanguageList.class);
-//            intent.putExtra(LanguageList.LANGUAGE_LIST, avaliableLangs);
-//            startActivityForResult(intent, TO_LANGUAGE_REQUEST);
+            LanguageBarFragment langFrag = (LanguageBarFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.language_bar);
+            String fromLang = langFrag.getLang(LanguageBarFragment.FROM_LANG);
+            ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get(fromLang));
+            Intent intent = new Intent(this, LanguageList.class);
+            intent.putExtra(LanguageList.LANGUAGE_LIST, avaliableLangs);
+            startActivityForResult(intent, TO_LANGUAGE_REQUEST);
         }
-        UserInformer.showMessage(which, TranslateActivity.this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
+        String language = data.getStringExtra(LanguageList.LANGUAGE);
+        LanguageBarFragment langFrag = (LanguageBarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.language_bar);
         if (requestCode == FROM_LANGUAGE_REQUEST) {
-            String fromLang = data.getStringExtra(LanguageList.LANGUAGE);
-            LanguageBarFragment langFrag = (LanguageBarFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.language_bar);
-            langFrag.setLang(R.id.from_field, fromLang);
+            langFrag.setLang(R.id.from_field, language);
+            langFrag.setLang(R.id.to_field, languageMap.get(language).get(0));
         }
-        else if (requestCode == TO_LANGUAGE_REQUEST) {
-            String toLang = data.getStringExtra(LanguageList.LANGUAGE);
-            LanguageBarFragment langFrag = (LanguageBarFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.language_bar);
-            langFrag.setLang(R.id.to_field, toLang);
-        }
+        else if (requestCode == TO_LANGUAGE_REQUEST)
+            langFrag.setLang(R.id.to_field, language);
     }
 
     @Override

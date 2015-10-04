@@ -80,9 +80,9 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
 
     public String getLang (String which) {
         if (which.equals(FROM_LANG))
-            ((Button) view.findViewById(R.id.from_field)).getText();
+            return (String)((Button) view.findViewById(R.id.from_field)).getText();
         else
-            ((Button) view.findViewById(R.id.to_field)).getText();
+            return (String)((Button) view.findViewById(R.id.to_field)).getText();
     }
 
 

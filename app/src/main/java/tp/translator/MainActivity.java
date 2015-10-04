@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 proceedToTranslation(data);
             }
         });
-
-//        TODO: Закомментить, если все повалится
+        
         ProgressBarViewer.view(MainActivity.this, getResources().getString(R.string.language_loading_progress_bar_msg));
         try {
             YandexAPIAdapter.getLanguages();

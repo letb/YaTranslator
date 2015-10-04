@@ -96,7 +96,6 @@ public class YandexAPIAdapter {
 
     public static void getLanguages() throws IOException {
         String url = PREFIX + PARAM_GET_LANGS + PARAM_API_KEY + API_KEY + PARAM_UI + UI;
-
         URL requestUrl = new URL(url);
         GetRequestTask getRequestTask = new GetRequestTask();
         getRequestTask.execute(requestUrl);
