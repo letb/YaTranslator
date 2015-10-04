@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tp.translator.utils.Parser;
+import tp.translator.utils.ProgressBarViewer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,10 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        ProgressBarViewer.view(MainActivity.this, getResources().getString(R.string.language_loading_progress_bar_msg));
         try {
             HashMap<String, ArrayList<String>> languageMap = Parser.parseLanguageList(
                     getResources().getString(R.string.api_langarray_name),
@@ -31,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
             );
             Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
             intent.putExtra(TranslateActivity.LANGUAGE_MAP, languageMap);
+            ProgressBarViewer.hide();
             startActivity(intent);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
