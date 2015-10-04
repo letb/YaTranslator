@@ -19,13 +19,6 @@
         style="@android:style/Widget.Holo.Light.Spinner"/>
 
     <Button
-        android:layout_width="33dp"
-        android:layout_height="wrap_content"
-        android:text="<->"
-        android:id="@+id/revert_translation_button"
-        android:layout_weight="0.10" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Russian"
