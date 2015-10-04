@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tp.translator.fragments.TranslateAreaFragment"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:id="@+id/input_text_edit"
+        android:layout_above="@+id/translate_button"
+        android:background="@drawable/border_style"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Translate"
+        android:id="@+id/translate_button"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/output_view"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:background="@drawable/border_style"
+        android:id="@+id/output_view" />
+</LinearLayout>
