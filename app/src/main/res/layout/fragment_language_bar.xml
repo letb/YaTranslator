@@ -12,19 +12,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="English"
+        android:text="en"
         android:id="@+id/from_field"
-        android:layout_weight="0.45"
+        android:layout_weight="0.5"
         android:paddingLeft="20dp"
         style="@android:style/Widget.Holo.Light.Spinner"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Russian"
+        android:text="ru"
         android:paddingLeft="20dp"
         android:id="@+id/to_field"
-        android:layout_weight="0.45"
+        android:layout_weight="0.5"
         style="@android:style/Widget.Holo.Light.Spinner"/>
 
 </LinearLayout>

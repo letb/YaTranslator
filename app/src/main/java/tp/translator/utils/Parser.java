@@ -68,4 +68,10 @@ public class Parser {
 
         return langNamesMap;
     }
+
+    public static String parseTranslation(String values) throws JSONException {
+        JSONObject jsonString = new JSONObject(values);
+        String text = jsonString.getJSONArray("text").get(0).toString();
+        return text;
+    }
 }

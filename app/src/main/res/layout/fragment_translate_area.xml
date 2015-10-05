@@ -29,5 +29,5 @@
         android:layout_width="300dp"
         android:layout_height="120dp"
         android:background="@drawable/border_style"
-        android:id="@+id/output_view" />
+        android:id="@+id/output_text_view" />
 </LinearLayout>

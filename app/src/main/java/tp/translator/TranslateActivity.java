@@ -15,7 +15,9 @@ import tp.translator.fragments.LanguageBarFragment;
 import tp.translator.fragments.TranslateAreaFragment;
 import tp.translator.utils.UserInformer;
 
-public class TranslateActivity extends AppCompatActivity implements LanguageBarFragment.OnLanguageChangeListener, TranslateAreaFragment.OnFragmentInteractionListener {
+public class TranslateActivity extends AppCompatActivity
+        implements LanguageBarFragment.OnLanguageChangeListener,
+                  TranslateAreaFragment.OnTranslateAreaListener {
 
     public static final String LANGUAGE_MAP = "language_map";
     public static int FROM_LANGUAGE_REQUEST = 1;
@@ -54,6 +56,19 @@ public class TranslateActivity extends AppCompatActivity implements LanguageBarF
     }
 
     @Override
+    public void translateClicked() {
+        LanguageBarFragment langFrag = (LanguageBarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.language_bar);
+        TranslateAreaFragment transFrag = (TranslateAreaFragment)
+                getSupportFragmentManager().findFragmentById(R.id.translate_area);
+
+        String fromLang = langFrag.getLang(langFrag.FROM_LANG);
+        String toLang   = langFrag.getLang(langFrag.TO_LANG);
+        transFrag.translate(fromLang, toLang);
+    }
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         String language = data.getStringExtra(LanguageList.LANGUAGE);
@@ -67,8 +82,5 @@ public class TranslateActivity extends AppCompatActivity implements LanguageBarF
             langFrag.setLang(R.id.to_field, language);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 }
