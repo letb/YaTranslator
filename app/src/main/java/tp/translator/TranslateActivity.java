@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import tp.translator.fragments.LanguageBarFragment;
 import tp.translator.fragments.TranslateAreaFragment;
+import tp.translator.utils.ProgressBarViewer;
 import tp.translator.utils.UserInformer;
 
 public class TranslateActivity extends AppCompatActivity
@@ -30,6 +32,16 @@ public class TranslateActivity extends AppCompatActivity
         setContentView(R.layout.activity_translate);
         Intent intent = getIntent();
         fetchParams(intent);
+        final TranslateAreaFragment transFrag = (TranslateAreaFragment)
+                getSupportFragmentManager().findFragmentById(R.id.translate_area);
+
+        YandexAPIAdapter.setAdapterListener(new YandexAPIAdapter.AdapterListener() {
+            @Override
+            public void onDataLoaded(String data) {
+                ProgressBarViewer.hide();
+                transFrag.showTranslatedText(data);
+            }
+        });
     }
 
     public void fetchParams (Intent intent) {
@@ -64,7 +76,13 @@ public class TranslateActivity extends AppCompatActivity
 
         String fromLang = langFrag.getLang(langFrag.FROM_LANG);
         String toLang   = langFrag.getLang(langFrag.TO_LANG);
-        transFrag.translate(fromLang, toLang);
+
+        ProgressBarViewer.view(TranslateActivity.this, getResources().getString(R.string.translation_progress_bar_msg));
+        try {
+            transFrag.translateText(fromLang, toLang);
+        } catch (IOException e) {
+            UserInformer.showMessage(getResources().getString(R.string.CONNECTION_ERROR), TranslateActivity.this);
+        }
     }
 
 

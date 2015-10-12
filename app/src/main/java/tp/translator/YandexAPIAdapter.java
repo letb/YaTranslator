@@ -57,7 +57,6 @@ public class YandexAPIAdapter {
 
 
     private static class GetRequestTask extends AsyncTask<URL, Void, String> {
-        protected Exception error;
 
         @Override
         protected String doInBackground(URL... urls) {
@@ -65,6 +64,8 @@ public class YandexAPIAdapter {
                 URL requestUrl = urls[0];
                 HttpsURLConnection urlConnection = (HttpsURLConnection) requestUrl.openConnection();
                 urlConnection.setRequestMethod("GET");
+                urlConnection.setConnectTimeout(5000);
+                urlConnection.setReadTimeout(5000);
 
                 try {
                     int responseCode = urlConnection.getResponseCode();
@@ -80,10 +81,9 @@ public class YandexAPIAdapter {
                     urlConnection.disconnect();
                 }
             } catch (Exception e) {
-                error = e;
+                e.printStackTrace();
                 Log.e(this.getClass().toString(), e.getMessage(), e);
-
-                return null;
+                return e.getMessage();
             }
         }
 
@@ -97,37 +97,32 @@ public class YandexAPIAdapter {
     public static void getLanguages() throws IOException {
         String url = PREFIX + PARAM_GET_LANGS + PARAM_API_KEY + API_KEY + PARAM_UI + UI;
         URL requestUrl = new URL(url);
+
         GetRequestTask getRequestTask = new GetRequestTask();
         getRequestTask.execute(requestUrl);
     }
 
-    public static String detectLanguage(final String text) throws IOException, ExecutionException, InterruptedException {
+    public static void detectLanguage(final String text) throws IOException {
         String url = PREFIX + PARAM_DETECT + PARAM_API_KEY + API_KEY + PARAM_TEXT + text;
-
         URL requestUrl = new URL(url);
 
         GetRequestTask getRequestTask = new GetRequestTask();
-        String response = getRequestTask.execute(requestUrl).get();
-        Log.i("detectLanguage", response);
-
-
-        return response;
+        getRequestTask.execute(requestUrl);
     }
 
-    public static String translateText(final String text, final String fromLang, final String toLang)
+    public static void translateText(final String text, final String fromLang, final String toLang)
             throws IOException, ExecutionException, InterruptedException {
         final String LANG_PAIR = fromLang + "-" + toLang;
+        final String TEXT = text.replaceAll(" ", "%20");
         String url = PREFIX + PARAM_TRANSLATE + PARAM_API_KEY + API_KEY +
-                                                PARAM_TEXT + text +
+                                                PARAM_TEXT + TEXT +
                                                 PARAM_LANG_PAIR + LANG_PAIR;
-
         URL requestUrl = new URL(url);
-        GetRequestTask getRequestTask = new GetRequestTask();
-        String response = getRequestTask.execute(requestUrl).get();
-        Log.i("translateText", response);
 
-        return response;
+        GetRequestTask getRequestTask = new GetRequestTask();
+        getRequestTask.execute(requestUrl);
     }
+
 
 
 

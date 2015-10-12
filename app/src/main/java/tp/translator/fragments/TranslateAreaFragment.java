@@ -81,26 +81,26 @@ public class TranslateAreaFragment extends Fragment {
     // TODO: Запрещает ввод на русском
 
 
-    public void translate(String from_lang, String to_lang) {
+    public void translateText(String from_lang, String to_lang) throws IOException {
         String text = inputTextField.getText().toString();
         try {
-            String response = YandexAPIAdapter.translateText(text, from_lang, to_lang);
-            String translation = Parser.parseTranslation(response);
-            outputTextView.setText(translation);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            YandexAPIAdapter.translateText(text, from_lang, to_lang);
         } catch (ExecutionException e) {
-
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void showTranslatedText(String response) {
+        String translation = null;
+        try {
+            translation = Parser.parseTranslation(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        outputTextView.setText(translation);
     }
-
 
 
 }
