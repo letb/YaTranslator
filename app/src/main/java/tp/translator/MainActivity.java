@@ -40,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             HashMap<String, ArrayList<String>> languageMap =
                                         Parser.parseLanguageList(getResources().getString(R.string.api_langarray_name), languages);
+            HashMap<String, String> languagesNames = Parser.parseLanguagesNames(languages);
+
             Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
             intent.putExtra(TranslateActivity.LANGUAGE_MAP, languageMap);
+            intent.putExtra(TranslateActivity.LANGUAGES_NAMES, languagesNames);
             ProgressBarViewer.hide();
             startActivity(intent);
         } catch (JSONException e) {

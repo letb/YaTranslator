@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LanguageList extends AppCompatActivity {
     public static final String LANGUAGE_LIST = "language_list";

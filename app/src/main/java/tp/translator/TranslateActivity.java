@@ -1,15 +1,12 @@
 package tp.translator;
 
-import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import tp.translator.fragments.LanguageBarFragment;
@@ -22,16 +19,23 @@ public class TranslateActivity extends AppCompatActivity
                   TranslateAreaFragment.OnTranslateAreaListener {
 
     public static final String LANGUAGE_MAP = "language_map";
+    public static final String LANGUAGES_NAMES = "languages_names";
     public static int FROM_LANGUAGE_REQUEST = 1;
     public static int TO_LANGUAGE_REQUEST = 2;
     private HashMap<String, ArrayList<String>> languageMap;
+    private HashMap<String, String> languagesNames;
+
+    private void fetchIntentParams(Intent intent) {
+        languageMap = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra(LANGUAGE_MAP);
+        languagesNames = (HashMap<String, String>) intent.getSerializableExtra(LANGUAGES_NAMES);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
         Intent intent = getIntent();
-        fetchParams(intent);
+        fetchIntentParams(intent);
         final TranslateAreaFragment transFrag = (TranslateAreaFragment)
                 getSupportFragmentManager().findFragmentById(R.id.translate_area);
 
@@ -48,25 +52,32 @@ public class TranslateActivity extends AppCompatActivity
         });
     }
 
-    public void fetchParams (Intent intent) {
-        languageMap = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra(LANGUAGE_MAP);
+    private ArrayList<String> prepareLanguagesList(ArrayList<String> availableLangs) {
+        for (int i = 0; i < availableLangs.size(); ++i) {
+            availableLangs.set(i, languagesNames.get(availableLangs.get(i)));
+        }
+        Collections.sort(availableLangs);
+
+        return availableLangs;
     }
 
     @Override
     public void languageChanged(String which) {
         if (which.equals(LanguageBarFragment.FROM_LANG)) {
-            ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.keySet());
+            ArrayList <String> availableLangs = new ArrayList<>(languageMap.keySet());
+
             Intent intent = new Intent(this, LanguageList.class);
-            intent.putExtra(LanguageList.LANGUAGE_LIST, avaliableLangs);
+            intent.putExtra(LanguageList.LANGUAGE_LIST, prepareLanguagesList(availableLangs));
             startActivityForResult(intent, FROM_LANGUAGE_REQUEST);
         }
         else {
             LanguageBarFragment langFrag = (LanguageBarFragment)
                     getSupportFragmentManager().findFragmentById(R.id.language_bar);
-            String fromLang = langFrag.getLang(LanguageBarFragment.FROM_LANG);
-            ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get(fromLang));
+            String fromLang = languagesNames.get(langFrag.getLang(LanguageBarFragment.FROM_LANG));
+
+            ArrayList <String> availableLangs = new ArrayList<>(languageMap.get(fromLang));
             Intent intent = new Intent(this, LanguageList.class);
-            intent.putExtra(LanguageList.LANGUAGE_LIST, avaliableLangs);
+            intent.putExtra(LanguageList.LANGUAGE_LIST, prepareLanguagesList(availableLangs));
             startActivityForResult(intent, TO_LANGUAGE_REQUEST);
         }
     }
@@ -93,8 +104,8 @@ public class TranslateActivity extends AppCompatActivity
         TranslateAreaFragment transFrag = (TranslateAreaFragment)
                 getSupportFragmentManager().findFragmentById(R.id.translate_area);
 
-        String fromLang = langFrag.getLang(LanguageBarFragment.FROM_LANG);
-        String toLang   = langFrag.getLang(LanguageBarFragment.TO_LANG);
+        String fromLang = languagesNames.get(langFrag.getLang(LanguageBarFragment.FROM_LANG));
+        String toLang   = languagesNames.get(langFrag.getLang(LanguageBarFragment.TO_LANG));
 
         ProgressBarViewer.view(TranslateActivity.this, getResources().getString(R.string.translation_progress_bar_msg));
         try {
@@ -113,7 +124,7 @@ public class TranslateActivity extends AppCompatActivity
                 getSupportFragmentManager().findFragmentById(R.id.language_bar);
         if (requestCode == FROM_LANGUAGE_REQUEST) {
             langFrag.setLang(R.id.from_field, language);
-            langFrag.setLang(R.id.to_field, languageMap.get(language).get(0));
+            langFrag.setLang(R.id.to_field, languageMap.get(languagesNames.get(language)).get(0));
         }
         else if (requestCode == TO_LANGUAGE_REQUEST)
             langFrag.setLang(R.id.to_field, language);
