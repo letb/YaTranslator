@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Translator</string>
-
     <string name="api_langarray_name">dirs</string>
-    <string name="language_loading_progress_bar_msg">Languages are being loaded</string>
+    <string name="language_loading_progress_bar_msg">Loading languages...</string>
+    <string name="translation_progress_bar_msg">Translating...</string>
     <string name="hello_world">Hello world!</string>
     <string name="CONNECTION_ERROR">Connection to Yandex failed</string>
-    <string name="PARSE_ERROR">Unexpected Yandex response</string>
+    <string name="PARSE_ERROR">Unexpected Yandex response: </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_language_list">Language List</string>
     <string name="title_activity_translator">Translator</string>

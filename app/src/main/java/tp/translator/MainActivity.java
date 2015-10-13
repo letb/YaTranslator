@@ -3,9 +3,6 @@ package tp.translator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -27,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         YandexAPIAdapter.setAdapterListener(new YandexAPIAdapter.AdapterListener() {
             @Override
             public void onDataLoaded(String data) {
-                proceedToTranslation(data);
+                proceedToFormsFilling(data);
             }
         });
         
@@ -39,18 +36,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void proceedToTranslation (String languages) {
+    public void proceedToFormsFilling(String languages) {
         try {
-            HashMap<String, ArrayList<String>> languageMap = Parser.parseLanguageList(
-                    getResources().getString(R.string.api_langarray_name),
-                    languages
-            );
+            HashMap<String, ArrayList<String>> languageMap =
+                                        Parser.parseLanguageList(getResources().getString(R.string.api_langarray_name), languages);
             Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
             intent.putExtra(TranslateActivity.LANGUAGE_MAP, languageMap);
             ProgressBarViewer.hide();
             startActivity(intent);
         } catch (JSONException e) {
-            UserInformer.showMessage(getResources().getString(R.string.PARSE_ERROR), MainActivity.this);
+            UserInformer.showMessage(getResources().getString(R.string.PARSE_ERROR) + languages, MainActivity.this);
         }
     }
 

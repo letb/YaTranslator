@@ -54,7 +54,7 @@ public class Parser {
     }
 
     public static Map<String, String> parseLanguagesNames(String values) throws JSONException {
-        Map<String, String> langNamesMap = new HashMap<String, String>();
+        Map<String, String> languagesNamesMap = new HashMap<String, String>();
 
         JSONObject valuesObject = new JSONObject(values);
         JSONObject langsObject = valuesObject.getJSONObject("langs");
@@ -63,10 +63,10 @@ public class Parser {
         while (keysIter.hasNext()) {
             String key = keysIter.next();
             String value = langsObject.getString(key);
-            langNamesMap.put(key, value);
+            languagesNamesMap.put(key, value);
         }
 
-        return langNamesMap;
+        return languagesNamesMap;
     }
 
     public static String parseTranslation(String values) throws JSONException {
