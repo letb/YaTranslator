@@ -2,29 +2,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="60dp"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
+    android:background="@color/yellow"
     android:weightSum="1">
 
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="en"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:text="@string/default_language_from"
         android:id="@+id/from_field"
-        android:layout_weight="0.5"
-        android:paddingLeft="20dp"
-        style="@android:style/Widget.Holo.Light.Spinner"/>
+        android:layout_weight="0.425"
+        android:paddingRight="20dp"
+        style="?android:attr/borderlessButtonStyle"
+
+        />
+
+    <ImageButton
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:id="@+id/reverse"
+        android:src="@drawable/reverse_arrow"
+        android:layout_weight="0.15"
+        android:background="@android:color/transparent" />
+
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ru"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|left"
+
+        android:text="@string/default_language_to"
         android:paddingLeft="20dp"
         android:id="@+id/to_field"
-        android:layout_weight="0.5"
-        style="@android:style/Widget.Holo.Light.Spinner"/>
+        android:layout_weight="0.425"
+        style="?android:attr/borderlessButtonStyle"
+
+        />
 
 </LinearLayout>

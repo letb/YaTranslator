@@ -11,4 +11,23 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TranslateAreaEditText">
+        <item name="android:background"> @drawable/border_style</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:gravity">top|left</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:hint"> @string/translation_area_placeholder</item>
+    </style>
+
+    <style name="TranslateAreaTextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/border_style</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">20dp</item>
+    </style>
+
+    <style name="TranslateButton">
+    </style>
+
 </resources>

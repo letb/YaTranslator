@@ -3,10 +3,21 @@
     <string name="api_langarray_name">dirs</string>
     <string name="language_loading_progress_bar_msg">Loading languages...</string>
     <string name="translation_progress_bar_msg">Translating...</string>
+    <string name="translation_area_placeholder">Введите текст для перевода...</string>
+    <string name="translation_button_text">Перевести</string>
+    <string name="default_language_from">en</string>
+    <string name="default_language_to">ru</string>
+
+
     <string name="hello_world">Hello world!</string>
     <string name="CONNECTION_ERROR">Connection to Yandex failed</string>
     <string name="PARSE_ERROR">Unexpected Yandex response: </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_language_list">Language List</string>
     <string name="title_activity_translator">Translator</string>
+
+    <color  name="yellow">#FFDC61</color>
+    <color  name="grey">#d0d0d0</color>
+
+
 </resources>
