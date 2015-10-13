@@ -18,21 +18,43 @@
         android:layout_gravity="center_vertical"
         style="@style/TranslateAreaEditText" />
 
-    <Button
-        android:id="@+id/translate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/translation_button_text"
-        android:layout_gravity="center_vertical"
-        android:layout_above="@+id/output_view"/>
     <!--android:layout_weight="0.1"-->
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_weight="0"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/translate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/translation_button_text" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:gravity="center|bottom"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_button_text"
+                android:id="@+id/clear_button"
+                android:layout_margin="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/output_view"
+        android:id="@+id/output_text_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
         android:layout_gravity="center_vertical"
         style="@style/TranslateAreaTextView"/>
+
 </LinearLayout>

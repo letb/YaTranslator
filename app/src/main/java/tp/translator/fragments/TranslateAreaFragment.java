@@ -1,6 +1,7 @@
 package tp.translator.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -56,17 +57,30 @@ public class TranslateAreaFragment extends Fragment {
                 mListener.translateClicked();
             }
         });
+
+        Button clearButton = (Button) view.findViewById(R.id.clear_button);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputTextField.setText("");
+                outputTextView.setText("");
+            }
+        });
         return view;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnTranslateAreaListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnTranslateAreaListener");
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity activity;
+        if (context instanceof Activity) {
+            activity = (Activity) context;
+            try {
+                mListener = (OnTranslateAreaListener) activity;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(activity.toString()
+                        + " must implement OnTranslateAreaListener");
+            }
         }
     }
 
@@ -76,13 +90,11 @@ public class TranslateAreaFragment extends Fragment {
         mListener = null;
     }
 
-    // TODO: Вылетает, если в EditText несколько строк
-    // TODO: Падает в горизонтальном положении
     // TODO: Запрещает ввод на русском
 
 
     public void translateText(String from_lang, String to_lang) throws IOException {
-        String text = inputTextField.getText().toString();
+        String text = clearBadSymbols(inputTextField.getText().toString());
         try {
             YandexAPIAdapter.translateText(text, from_lang, to_lang);
         } catch (ExecutionException e) {
@@ -92,15 +104,22 @@ public class TranslateAreaFragment extends Fragment {
         }
     }
 
-    public void showTranslatedText(String response) {
-        String translation = null;
-        try {
-            translation = Parser.parseTranslation(response);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public void showTranslatedText(String response) throws IOException {
+        String translation = "";
+        if (response != null) {
+            try {
+                translation = Parser.parseTranslation(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            outputTextView.setText(translation);
         }
-        outputTextView.setText(translation);
+        else {
+            throw new IOException();
+        }
     }
 
-
+    private String clearBadSymbols(String text) {
+        return text.replace("\n", " ").replace("\r", " ");
+    }
 }

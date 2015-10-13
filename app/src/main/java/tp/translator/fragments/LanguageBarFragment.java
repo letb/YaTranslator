@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import tp.translator.R;
 
@@ -49,6 +50,8 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
         view = inflater.inflate(R.layout.fragment_language_bar, container, false);
         Button fromBtn = (Button) view.findViewById(R.id.from_field);
         Button toBtn = (Button) view.findViewById(R.id.to_field);
+        ImageButton reverseBtn = (ImageButton) view.findViewById(R.id.reverse);
+        reverseBtn.setOnClickListener(this);
         fromBtn.setOnClickListener(this);
         toBtn.setOnClickListener(this);
         return view;
@@ -56,7 +59,6 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        //do what you want to do when button is clicked
         switch (v.getId()) {
             case R.id.from_field:
                 mListener.languageChanged(FROM_LANG);
@@ -64,6 +66,10 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
             case R.id.to_field:
                 mListener.languageChanged(TO_LANG);
                 break;
+            case R.id.reverse:
+                Button fromBtn = (Button) view.findViewById(R.id.from_field);
+                Button toBtn = (Button) view.findViewById(R.id.to_field);
+                mListener.languageReversed(fromBtn.getText().toString(), toBtn.getText().toString());
         }
     }
 
@@ -87,7 +93,8 @@ public class LanguageBarFragment extends Fragment implements View.OnClickListene
 
 
     public interface OnLanguageChangeListener {
-        public void languageChanged(String which);
+        void languageChanged(String which);
+        void languageReversed(String left, String right);
     }
 
 }

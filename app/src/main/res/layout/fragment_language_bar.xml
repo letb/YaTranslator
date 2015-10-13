@@ -28,7 +28,8 @@
         android:id="@+id/reverse"
         android:src="@drawable/reverse_arrow"
         android:layout_weight="0.15"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+         />
 
 
     <Button

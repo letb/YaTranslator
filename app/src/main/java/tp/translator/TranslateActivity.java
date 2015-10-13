@@ -39,7 +39,11 @@ public class TranslateActivity extends AppCompatActivity
             @Override
             public void onDataLoaded(String data) {
                 ProgressBarViewer.hide();
-                transFrag.showTranslatedText(data);
+                try {
+                    transFrag.showTranslatedText(data);
+                } catch (IOException e) {
+                    UserInformer.showMessage(getResources().getString(R.string.CONNECTION_ERROR), TranslateActivity.this);
+                }
             }
         });
     }
@@ -68,14 +72,29 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
+    public void languageReversed(String left, String right) {
+        ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get(right));
+        LanguageBarFragment langFrag = (LanguageBarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.language_bar);
+        if (avaliableLangs.contains(left)) {
+            langFrag.setLang(R.id.from_field, right);
+            langFrag.setLang(R.id.to_field, left);
+        }
+        else {
+            langFrag.setLang(R.id.from_field, right);
+            langFrag.setLang(R.id.to_field, avaliableLangs.get(0));
+        }
+    }
+
+    @Override
     public void translateClicked() {
         LanguageBarFragment langFrag = (LanguageBarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.language_bar);
         TranslateAreaFragment transFrag = (TranslateAreaFragment)
                 getSupportFragmentManager().findFragmentById(R.id.translate_area);
 
-        String fromLang = langFrag.getLang(langFrag.FROM_LANG);
-        String toLang   = langFrag.getLang(langFrag.TO_LANG);
+        String fromLang = langFrag.getLang(LanguageBarFragment.FROM_LANG);
+        String toLang   = langFrag.getLang(LanguageBarFragment.TO_LANG);
 
         ProgressBarViewer.view(TranslateActivity.this, getResources().getString(R.string.translation_progress_bar_msg));
         try {
@@ -99,6 +118,4 @@ public class TranslateActivity extends AppCompatActivity
         else if (requestCode == TO_LANGUAGE_REQUEST)
             langFrag.setLang(R.id.to_field, language);
     }
-
-
 }
