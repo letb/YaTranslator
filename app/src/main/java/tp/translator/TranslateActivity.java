@@ -3,6 +3,7 @@ package tp.translator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,8 +37,16 @@ public class TranslateActivity extends AppCompatActivity
         setContentView(R.layout.activity_translate);
         Intent intent = getIntent();
         fetchIntentParams(intent);
+
         final TranslateAreaFragment transFrag = (TranslateAreaFragment)
                 getSupportFragmentManager().findFragmentById(R.id.translate_area);
+        final LanguageBarFragment langFrag = (LanguageBarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.language_bar);
+
+        Button fromBtn = (Button) langFrag.getView().findViewById(R.id.from_field);
+        Button toBtn = (Button) langFrag.getView().findViewById(R.id.to_field);
+        fromBtn.setText(languagesNames.get(getResources().getString(R.string.default_language_from)));
+        toBtn.setText(languagesNames.get(getResources().getString(R.string.default_language_to)));
 
         YandexAPIAdapter.setAdapterListener(new YandexAPIAdapter.AdapterListener() {
             @Override
@@ -84,16 +93,16 @@ public class TranslateActivity extends AppCompatActivity
 
     @Override
     public void languageReversed(String left, String right) {
-        ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get(right));
+        ArrayList <String> avaliableLangs = new ArrayList<>(languageMap.get(languagesNames.get(right)));
         LanguageBarFragment langFrag = (LanguageBarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.language_bar);
-        if (avaliableLangs.contains(left)) {
+        if (avaliableLangs.contains(languagesNames.get(left))) {
             langFrag.setLang(R.id.from_field, right);
             langFrag.setLang(R.id.to_field, left);
         }
         else {
             langFrag.setLang(R.id.from_field, right);
-            langFrag.setLang(R.id.to_field, avaliableLangs.get(0));
+            langFrag.setLang(R.id.to_field, languagesNames.get(avaliableLangs.get(0)));
         }
     }
 
@@ -122,11 +131,18 @@ public class TranslateActivity extends AppCompatActivity
         String language = data.getStringExtra(LanguageList.LANGUAGE);
         LanguageBarFragment langFrag = (LanguageBarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.language_bar);
+
         if (requestCode == FROM_LANGUAGE_REQUEST) {
             langFrag.setLang(R.id.from_field, language);
-            langFrag.setLang(R.id.to_field, languageMap.get(languagesNames.get(language)).get(0));
-        }
-        else if (requestCode == TO_LANGUAGE_REQUEST)
+
+            ArrayList<String> availableLangs = new ArrayList<>(languageMap.get(languagesNames.get(language)));
+            String toLangCode = languagesNames.get(langFrag.getLang(langFrag.TO_LANG));
+            if (!availableLangs.contains(toLangCode)) {
+                String fromLangCode = languagesNames.get(language);
+                langFrag.setLang(R.id.to_field, languagesNames.get(languageMap.get(fromLangCode).get(0)));
+            }
+        } else if (requestCode == TO_LANGUAGE_REQUEST) {
             langFrag.setLang(R.id.to_field, language);
+        }
     }
 }

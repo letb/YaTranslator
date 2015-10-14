@@ -14,7 +14,6 @@
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:gravity="center_vertical|right"
-        android:text="@string/default_language_from"
         android:id="@+id/from_field"
         android:layout_weight="0.425"
         android:paddingRight="20dp"
@@ -29,7 +28,7 @@
         android:src="@drawable/reverse_arrow"
         android:layout_weight="0.15"
         android:background="@android:color/transparent"
-         />
+        />
 
 
     <Button
@@ -37,7 +36,6 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical|left"
 
-        android:text="@string/default_language_to"
         android:paddingLeft="20dp"
         android:id="@+id/to_field"
         android:layout_weight="0.425"

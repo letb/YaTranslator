@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -21,7 +22,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class YandexAPIAdapter {
     static final String API_KEY = "trnsl.1.1.20151003T144534Z.40c93807d08d1478." +
                                     "dce04c61895b35b049d65073e98ecb8ef6e800d3",
-                        UI      = "ru";
+                        UI      = Locale.getDefault().getLanguage();
+//                        UI      = "ru";
 
     static final String PARAM_API_KEY   =   "key=",
                         PARAM_LANG_PAIR =   "&lang=",
