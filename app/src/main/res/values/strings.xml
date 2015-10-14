@@ -17,7 +17,7 @@
     <string name="title_activity_translator">Translator</string>
     <string name="clear_button_text">Clear</string>
 
-    <color  name="yellow">#FFDC61</color>
+    <color  name="green">#37b15b</color>
     <color  name="grey">#d0d0d0</color>
 
 

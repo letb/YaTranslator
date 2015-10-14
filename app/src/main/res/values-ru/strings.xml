@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Переводчик</string>
+    <string name="api_langarray_name">dirs</string>
+    <string name="language_loading_progress_bar_msg">Загрузка языков…</string>
+    <string name="translation_progress_bar_msg">Перевод</string>
+    <string name="translation_area_placeholder">Текст для перевода…</string>
+    <string name="translation_button_text">Перевести</string>
+    <string name="default_language_from">Русский</string>
+    <string name="default_language_to">Английский</string>
+
+
+    <string name="hello_world">Привет, мир!</string>
+    <string name="CONNECTION_ERROR">Не удалось соединиться с Яндексом</string>
+    <string name="PARSE_ERROR">Неизвестный ответ от Яндекса: </string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_language_list">Список языков</string>
+    <string name="title_activity_translator">Переводчик</string>
+    <string name="clear_button_text">Очистить</string>
+
+    <color  name="green">#FFDC61</color>
+    <color  name="grey">#d0d0d0</color>
+
+
+</resources>

@@ -6,7 +6,7 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:background="@color/yellow"
+    android:background="@color/green"
     android:weightSum="1">
 
 
