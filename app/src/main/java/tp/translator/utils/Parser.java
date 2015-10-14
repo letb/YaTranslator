@@ -49,6 +49,7 @@ public class Parser {
                 curLangTo.add(array[1]);
             }
         }
+        languageMap.put(curLang, curLangTo);
         languageMap.remove("");
         return languageMap;
     }
@@ -67,13 +68,10 @@ public class Parser {
             languagesNamesMap.put(key, value);
             languagesNamesMap.put(value, key);
         }
-
         return languagesNamesMap;
     }
 
     public static String parseTranslation(String values) throws JSONException {
-        JSONObject jsonString = new JSONObject(values);
-        String text = jsonString.getJSONArray("text").get(0).toString();
-        return text;
+        return new JSONObject(values).getJSONArray("text").get(0).toString();
     }
 }

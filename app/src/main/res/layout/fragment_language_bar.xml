@@ -19,7 +19,7 @@
         android:paddingRight="20dp"
         style="?android:attr/borderlessButtonStyle"
 
-        />
+        android:text="@string/default_language_from" />
 
     <ImageButton
         android:layout_width="0dip"
@@ -41,6 +41,6 @@
         android:layout_weight="0.425"
         style="?android:attr/borderlessButtonStyle"
 
-        />
+        android:text="@string/default_language_to" />
 
 </LinearLayout>

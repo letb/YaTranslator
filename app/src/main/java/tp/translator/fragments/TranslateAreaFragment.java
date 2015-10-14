@@ -90,33 +90,17 @@ public class TranslateAreaFragment extends Fragment {
         mListener = null;
     }
 
-    // TODO: Запрещает ввод на русском
-
-
-    public void translateText(String from_lang, String to_lang) throws IOException {
+    public void translateText(String from_lang, String to_lang) throws IOException, ExecutionException, InterruptedException {
         String text = clearBadSymbols(inputTextField.getText().toString());
-        try {
-            YandexAPIAdapter.translateText(text, from_lang, to_lang);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        YandexAPIAdapter.translateText(text, from_lang, to_lang);
     }
 
-    public void showTranslatedText(String response) throws IOException {
+    public void showTranslatedText(String response) throws IOException, JSONException {
         String translation = "";
-        if (response != null) {
-            try {
-                translation = Parser.parseTranslation(response);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            outputTextView.setText(translation);
-        }
-        else {
+        if (response != null)
+            outputTextView.setText(Parser.parseTranslation(response));
+        else
             throw new IOException();
-        }
     }
 
     private String clearBadSymbols(String text) {

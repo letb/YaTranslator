@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Translator</string>
     <string name="api_langarray_name">dirs</string>
-    <string name="language_loading_progress_bar_msg">Loading languages...</string>
-    <string name="translation_progress_bar_msg">Translating...</string>
-    <string name="translation_area_placeholder">Text for translation...</string>
+    <string name="language_loading_progress_bar_msg">Loading languages…</string>
+    <string name="translation_progress_bar_msg">Translating…</string>
+    <string name="translation_area_placeholder">Text for translation…</string>
     <string name="translation_button_text">Translate</string>
-    <string name="default_language_from">en</string>
-    <string name="default_language_to">ru</string>
+    <string name="default_language_from">English</string>
+    <string name="default_language_to">Russian</string>
 
 
     <string name="hello_world">Hello world!</string>
